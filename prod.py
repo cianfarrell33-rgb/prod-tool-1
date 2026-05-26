@@ -33,9 +33,9 @@ def calculate_lcoh(
     electrolyzer_size_mw,
     electrolyzer_capex,
     electricity_price,
-    specific_energy_consumption,
-    capacity_factor,
-    opex_percent,
+    specific_energy_consumption, #the amount of energy required to produce 1 kg of hydrogen
+    capacity_factor, #ratio of actual output to maximum possible output
+    opex, 
     discount_rate,
     lifetime,
 ):
@@ -63,7 +63,7 @@ def calculate_lcoh(
         annual_energy_consumption * electricity_price
     )
 
-    annual_opex = total_capex * opex_percent
+    annual_opex =  opex
 
     crf = capital_recovery_factor(discount_rate, lifetime)
 
@@ -138,11 +138,11 @@ capacity_factor = st.sidebar.slider(
     0.85,
 )
 
-opex_percent = (
+opex = (
     st.sidebar.slider(
-        "Annual OPEX (% of CAPEX)",
+        "Annual OPEX ",
         0.0,
-        10.0,
+        2500,
         3.0,
     )
     / 100
@@ -195,7 +195,7 @@ results = calculate_lcoh(
     electricity_price,
     specific_energy_consumption,
     capacity_factor,
-    opex_percent,
+    opex,
     discount_rate,
     lifetime,
 )

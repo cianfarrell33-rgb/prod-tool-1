@@ -273,7 +273,7 @@ summary_df = pd.DataFrame(
     }
 )
 
-st.dataframe(summary_df, use_container_width=True)
+st.dataframe(summary_df, width="stretch")
 
 # ---------------------------------------------------------
 # Sensitivity insights

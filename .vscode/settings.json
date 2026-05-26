@@ -1,0 +1,10 @@
+{
+  "python.defaultInterpreterPath": ".venv/bin/python",
+  "python.venvPath": ".",
+  "python.venvFolders": [
+    ".venv"
+  ],
+  "python.analysis.extraPaths": [
+    ".venv/lib/python3.11/site-packages"
+  ]
+}

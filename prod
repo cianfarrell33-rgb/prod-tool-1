@@ -138,14 +138,11 @@ capacity_factor = st.sidebar.slider(
     0.85,
 )
 
-opex = (
-    st.sidebar.slider(
-        "Annual OPEX ",
-        0.0,
-        2500,
-        3.0,
-    )
-    / 100
+opex = st.sidebar.slider(
+    "Annual OPEX ",
+    0.0,
+    1000000.0,
+    250000.0,
 )
 
 discount_rate = (

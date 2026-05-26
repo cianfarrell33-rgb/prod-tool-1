@@ -142,7 +142,7 @@ opex = st.sidebar.slider(
     "Annual OPEX ",
     0.0,
     1000000.0,
-    250000.0,
+    25.0,
 )
 
 discount_rate = (

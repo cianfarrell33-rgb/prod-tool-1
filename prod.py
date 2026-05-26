@@ -133,8 +133,8 @@ specific_energy_consumption = st.sidebar.slider(
 
 capacity_factor = st.sidebar.slider(
     "Capacity Factor",
-    0.1,
-    1.0,
+    0.10,
+    1.00,
     0.85,
 )
 

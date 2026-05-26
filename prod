@@ -142,7 +142,7 @@ opex = (
     st.sidebar.slider(
         "Annual OPEX ",
         0.0,
-        2500,
+        2500.0,
         3.0,
     )
     / 100

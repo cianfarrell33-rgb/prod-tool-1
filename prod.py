@@ -35,7 +35,7 @@ def calculate_lcoh(
     electricity_price,
     specific_energy_consumption,
     capacity_factor,
-    opex_percent,
+    opex,
     discount_rate,
     lifetime,
 ):
@@ -63,7 +63,7 @@ def calculate_lcoh(
         annual_energy_consumption * electricity_price
     )
 
-    annual_opex = total_capex * opex_percent
+    annual_opex = opex
 
     crf = capital_recovery_factor(discount_rate, lifetime)
 
@@ -138,14 +138,14 @@ capacity_factor = st.sidebar.slider(
     0.85,
 )
 
-opex_percent = (
+opex = (
     st.sidebar.slider(
-        "Annual OPEX (% of CAPEX)",
+        "Annual OPEX ",
         0.0,
-        10.0,
-        3.0,
+        1000000.0,
+        250000.0,
     )
-    / 100
+    
 )
 
 discount_rate = (
@@ -180,7 +180,6 @@ The model includes:
 - Capital expenditure (CAPEX)
 - Operating expenditure (OPEX)
 - Electricity costs
-- Plant utilization
 - Financing assumptions
 """
 )
@@ -195,7 +194,7 @@ results = calculate_lcoh(
     electricity_price,
     specific_energy_consumption,
     capacity_factor,
-    opex_percent,
+    opex,
     discount_rate,
     lifetime,
 )

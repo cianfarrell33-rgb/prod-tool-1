@@ -157,6 +157,12 @@ lifetime = st.sidebar.slider(
     20,
 )
 
+energy_unit = st.sidebar.selectbox(
+    "Annual Energy Display Unit",
+    ["kWh/year", "GWh/year", "TWh/year"],
+    index=0,
+)
+
 # ---------------------------------------------------------
 # Main title
 # ---------------------------------------------------------
@@ -215,9 +221,17 @@ col2.metric(
     f"{results['annual_h2_tonnes']:,.0f} tonnes/year",
 )
 
+energy_factor = 1.0
+if energy_unit == "GWh/year":
+    energy_factor = 1e-6
+elif energy_unit == "TWh/year":
+    energy_factor = 1e-9
+
+annual_energy_display = results["annual_energy"] * energy_factor
+
 col3.metric(
     "Annual Electricity Use",
-    f"{results['annual_energy']:,.0f} kWh/year",
+    f"{annual_energy_display:,.2f} {energy_unit}",
 )
 
 # ---------------------------------------------------------

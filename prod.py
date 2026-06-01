@@ -84,6 +84,8 @@ def calculate_lcoh(
         annual_electricity_cost / annual_hydrogen_production
     )
 
+    annual_h2_tonnes = annual_hydrogen_production / 1000
+
     return {
         "lcoh": lcoh,
         "annual_h2": annual_hydrogen_production,
@@ -94,6 +96,7 @@ def calculate_lcoh(
         "capex_component": capex_component,
         "opex_component": opex_component,
         "electricity_component": electricity_component,
+        "annual_h2_tonnes": annual_h2_tonnes,
     }
 
 
@@ -107,8 +110,7 @@ electrolyzer_size_mw = st.sidebar.number_input("Electrolyzer Size (MW)", min_val
    
 )
 
-electrolyzer_capex = st.sidebar.number_input("Electrolyzer CAPEX (€/kW)", min_value=1, value=2100, step=1
-   
+electrolyzer_capex = st.sidebar.number_input("Electrolyzer CAPEX (€/kW)", min_value=1, value=2100, step=1, 
 )
 
 electricity_price = st.sidebar.slider(
@@ -123,6 +125,7 @@ specific_energy_consumption = st.sidebar.slider(
     40.0,
     70.0,
     50.0,
+    help = "Energy needed to produce 1 kg of hydrogen."
 )
 
 capacity_factor = st.sidebar.slider(
@@ -132,7 +135,8 @@ capacity_factor = st.sidebar.slider(
     0.85,
 )
 
-opex = st.sidebar.number_input("Annual OPEX (€)", min_value=0.0, value=46000000.0, step=10000.0)
+opex = st.sidebar.number_input("Annual OPEX (€)", min_value=0.0, value=46000000.0, step=10000.0, help = "Annual operating expenses excluding electricity."
+)
 
 
 
@@ -195,14 +199,20 @@ st.header("Key Results")
 
 col1, col2, col3 = st.columns(3)
 
-col1.metric(
-    "LCOH",
-    f"{results['lcoh']:.2f} €/kg H₂",
+col1.markdown(
+    f"""
+    <div style="text-align:center">
+      <p style="font-size:2.5rem; margin:0; font-weight:600">LCOH</p>
+      <p style="font-size:5rem; margin:0">{results['lcoh']:.2f} €/kg H₂</p>
+    </div>
+    """,
+    unsafe_allow_html=True,
 )
+
 
 col2.metric(
     "Annual Hydrogen Production",
-    f"{results['annual_h2']:,.0f} kg/year",
+    f"{results['annual_h2_tonnes']:,.0f} tonnes/year",
 )
 
 col3.metric(

@@ -106,11 +106,21 @@ def calculate_lcoh(
 
 st.sidebar.title("Input Parameters")
 
-electrolyzer_size_mw = st.sidebar.number_input("Electrolyzer Size (MW)", min_value=1, value=900, step=1
+electrolyzer_size_mw = st.sidebar.number_input(
+    "Electrolyzer Size (MW)", 
+    min_value=1, 
+    value=900, 
+    step=1
+    help = "Total capacity of the electrolyzer in megawatts (MW)."
    
 )
 
-electrolyzer_capex = st.sidebar.number_input("Electrolyzer CAPEX (€/kW)", min_value=1, value=2100, step=1, 
+electrolyzer_capex = st.sidebar.number_input(
+    "Electrolyzer CAPEX (€/kW)", 
+    min_value=1, 
+    value=2100, 
+    step=1, 
+    help = "Capital cost of the electrolyzer per kW of capacity."
 )
 
 electricity_price = st.sidebar.slider(
@@ -133,9 +143,15 @@ capacity_factor = st.sidebar.slider(
     0.10,
     1.00,
     0.85,
+    help = "Ratio of actual output to maximum possible output, reflecting plant utilization."
 )
 
-opex = st.sidebar.number_input("Annual OPEX (€)", min_value=0.0, value=46000000.0, step=10000.0, help = "Annual operating expenses excluding electricity."
+opex = st.sidebar.number_input(
+    "Annual OPEX (€)", 
+    min_value=0.0, 
+    value=46000000.0, 
+    step=10000.0, 
+    help = "Annual operating expenses excluding electricity."
 )
 
 
@@ -146,6 +162,7 @@ discount_rate = (
         0.0,
         20.0,
         8.0,
+        help = "Rate used to discount future cash flows to present value."
     )
     / 100
 )

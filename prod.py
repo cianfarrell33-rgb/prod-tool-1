@@ -110,7 +110,7 @@ electrolyzer_size_mw = st.sidebar.number_input(
     "Electrolyzer Size (MW)", 
     min_value=1, 
     value=900, 
-    step=1
+    step=1,
     help = "Total capacity of the electrolyzer in megawatts (MW)."
    
 )

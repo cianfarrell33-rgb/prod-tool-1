@@ -177,7 +177,7 @@ lifetime = st.sidebar.slider(
 energy_unit = st.sidebar.selectbox(
     "Annual Energy Display Unit",
     ["kWh/year", "GWh/year", "TWh/year"],
-    index=0,
+    index=2,
 )
 
 # ---------------------------------------------------------

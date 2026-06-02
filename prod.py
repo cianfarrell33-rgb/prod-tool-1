@@ -225,8 +225,8 @@ col1, col2, col3 = st.columns(3)
 col1.markdown(
     f"""
     <div style="text-align:center">
-      <p style="font-size:2.5rem; margin:0; font-weight:600">LCOH</p>
-      <p style="font-size:5rem; margin:0">{results['lcoh']:.2f} €/kg H₂</p>
+      <p style="font-size:2rem; margin:0; font-weight:600">LCOH</p>
+      <p style="font-size:4rem; margin:0">{results['lcoh']:.2f} €/kg H₂</p>
     </div>
     """,
     unsafe_allow_html=True,

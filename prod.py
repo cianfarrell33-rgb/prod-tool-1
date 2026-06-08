@@ -1,6 +1,9 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+from numpy.random import default_rng as rng
+import plotly.graph_objects as go
+
 
 # ---------------------------------------------------------
 # Green Hydrogen LCOH Calculator
@@ -35,9 +38,13 @@ def calculate_lcoh(
     electricity_price,
     specific_energy_consumption, #the amount of energy required to produce 1 kg of hydrogen
     capacity_factor, #ratio of actual output to maximum possible output
-    opex, 
+    opex,
+    water_treatment_plant_opex,
     discount_rate,
     lifetime,
+    electrolyzer_civil_construction_costs,  
+    water_treatment_plant_civil_construction_costs
+
 ):
     """
     Calculate LCOH and annual metrics
@@ -47,7 +54,7 @@ def calculate_lcoh(
     size_kw = electrolyzer_size_mw * 1000
 
     # CAPEX
-    total_capex = size_kw * electrolyzer_capex
+    total_capex = (size_kw * electrolyzer_capex) + electrolyzer_civil_construction_costs + water_treatment_plant_civil_construction_costs
 
     # Annual operation
     operating_hours = 8760 * capacity_factor
@@ -63,7 +70,7 @@ def calculate_lcoh(
         annual_energy_consumption * electricity_price
     )
 
-    annual_opex =  opex
+    annual_opex =  opex + water_treatment_plant_opex
 
     crf = capital_recovery_factor(discount_rate, lifetime)
 
@@ -123,6 +130,38 @@ electrolyzer_capex = st.sidebar.number_input(
     help = "Capital cost of the electrolyzer per kW of capacity."
 )
 
+electrolyzer_civil_construction_costs = st.sidebar.number_input(
+    "Electrolyzer Civil Construction Costs (€)", 
+    min_value=0.0, 
+    value=10000000.0, 
+    step=10000.0, 
+    help = "Fixed costs for site preparation and infrastructure."
+)
+
+opex = st.sidebar.number_input(
+    "Annual Electrolyzer OPEX (€)", 
+    min_value=0.0, 
+    value=46000000.0, 
+    step=10000.0, 
+    help = "Annual operating expenses excluding electricity."
+)
+
+water_treatment_plant_civil_construction_costs = st.sidebar.number_input(
+    "Water Treatment Plant Civil Construction Costs (€)", 
+    min_value=0.0, 
+    value=5000000.0, 
+    step=10000.0, 
+    help = "Fixed costs for water treatment infrastructure."
+)
+
+water_treatment_plant_opex = st.sidebar.number_input(
+    "Water Treatment Plant OPEX (€)", 
+    min_value=0.0, 
+    value=2000000.0, 
+    step=10000.0, 
+    help = "Annual operating expenses for water treatment."
+)
+
 electricity_price = st.sidebar.slider(
     "Electricity Price (€/kWh)",
     0.01,
@@ -134,7 +173,7 @@ specific_energy_consumption = st.sidebar.slider(
     "Specific Energy Consumption (kWh/kg H₂)",
     40.0,
     70.0,
-    50.0,
+    55.0,
     help = "Energy needed to produce 1 kg of hydrogen."
 )
 
@@ -145,16 +184,6 @@ capacity_factor = st.sidebar.slider(
     0.85,
     help = "Ratio of actual output to maximum possible output, reflecting plant utilization."
 )
-
-opex = st.sidebar.number_input(
-    "Annual OPEX (€)", 
-    min_value=0.0, 
-    value=46000000.0, 
-    step=10000.0, 
-    help = "Annual operating expenses excluding electricity."
-)
-
-
 
 discount_rate = (
     st.sidebar.slider(
@@ -210,8 +239,13 @@ results = calculate_lcoh(
     specific_energy_consumption,
     capacity_factor,
     opex,
+    water_treatment_plant_opex,
     discount_rate,
     lifetime,
+    electrolyzer_civil_construction_costs,
+    water_treatment_plant_civil_construction_costs,
+    
+    
 )
 
 # ---------------------------------------------------------
@@ -254,6 +288,28 @@ col3.metric(
 # ---------------------------------------------------------
 # Cost breakdown
 # ---------------------------------------------------------
+st.title("Hydrogen Electricity Calculator")
+
+
+
+fig = go.Figure(go.Waterfall(
+    measure=["relative", "relative", "relative", "total"],
+    x=["CAPEX", "OPEX", "Electricity", "Total"],
+    y=[results["capex_component"], results["opex_component"], results["electricity_component"], 0,]
+))
+
+fig.update_layout(
+    title="Electricity Breakdown",
+    yaxis_title="kWh"
+)
+
+st.plotly_chart(fig, use_container_width=False)
+
+
+
+
+
+
 
 st.header("LCOH Cost Breakdown")
 
@@ -326,6 +382,54 @@ This shows how strongly green hydrogen economics depend on
 renewable electricity pricing and electrolyzer efficiency.
 """
 )
+
+st.header("Electricity required per value H₂")
+
+hy_input = st.number_input(
+    "Hydrogen Amount (kg)",
+    min_value=1,
+    value=1,
+    step=1,
+)
+
+electricity_per_kg = specific_energy_consumption * hy_input
+
+
+
+st.metric(
+    "Total electricity required",
+    f"{electricity_per_kg:.2f} kWh",
+)   
+
+
+
+
+
+
+
+
+
+
+
+# Sample data
+
+
+
+st.title("Hydrogen Electricity Calculator")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # ---------------------------------------------------------
 # Footer

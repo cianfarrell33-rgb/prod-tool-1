@@ -119,7 +119,6 @@ electrolyzer_size_mw = st.sidebar.number_input(
     value=900, 
     step=1,
     help = "Total capacity of the electrolyzer in megawatts (MW)."
-   
 )
 
 electrolyzer_capex = st.sidebar.number_input(
@@ -288,7 +287,9 @@ col3.metric(
 # ---------------------------------------------------------
 # Cost breakdown
 # ---------------------------------------------------------
-st.title("Hydrogen Electricity Calculator")
+
+
+st.title("LCOH Cost Breakdown")
 
 
 
@@ -300,7 +301,7 @@ fig = go.Figure(go.Waterfall(
 
 fig.update_layout(
     title="Electricity Breakdown",
-    yaxis_title="kWh"
+    yaxis_title="€/kg H₂"
 )
 
 st.plotly_chart(fig, use_container_width=False)
@@ -311,34 +312,8 @@ st.plotly_chart(fig, use_container_width=False)
 
 
 
-st.header("LCOH Cost Breakdown")
 
-breakdown_df = pd.DataFrame(
-    {
-        "Component": [
-            "CAPEX",
-            "OPEX",
-            "Electricity",
-        ],
-        "€/kg H₂": [
-            results["capex_component"],
-            results["opex_component"],
-            results["electricity_component"],
-        ],
-    }
-)
 
-fig, ax = plt.subplots(figsize=(7, 4))
-
-ax.bar(
-    breakdown_df["Component"],
-    breakdown_df["€/kg H₂"],
-)
-
-ax.set_ylabel("€/kg H₂")
-ax.set_title("LCOH Breakdown")
-
-st.pyplot(fig)
 
 # ---------------------------------------------------------
 # Financial summary
@@ -400,31 +375,6 @@ st.metric(
     "Total electricity required",
     f"{electricity_per_kg:.2f} kWh",
 )   
-
-
-
-
-
-
-
-
-
-
-
-# Sample data
-
-
-
-st.title("Hydrogen Electricity Calculator")
-
-
-
-
-
-
-
-
-
 
 
 

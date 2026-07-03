@@ -396,6 +396,5 @@ Assumptions:
 - Fixed electricity price
 - No hydrogen storage or transport costs
 - No stack replacement costs
-- No water treatment costs
 """
 )

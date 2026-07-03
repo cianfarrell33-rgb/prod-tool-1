@@ -336,6 +336,8 @@ summary_df = pd.DataFrame(
     }
 )
 
+summary_df = summary_df.style.format({"Value (€)": "{:,.0f}"})
+
 st.dataframe(summary_df, width="stretch")
 
 # ---------------------------------------------------------
